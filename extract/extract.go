@@ -1,3 +1,11 @@
+// Package extract provides a set of routines for extracting various Twitter
+// "entities" from text
+//
+// This package supports extraction of Twitter usernames, replies, lists,
+// hashtags, cashtags, and URLs. The implementation and API are based the
+// set of similarly named twitter-text-* libraries published by Twitter. This
+// library is tested using the standard Conformance test suite maintained by
+// Twitter (https://github.com/twitter/twitter-text-conformance).
 package extract
 
 import (
