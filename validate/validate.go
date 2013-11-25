@@ -2,6 +2,7 @@
 package validate
 
 import (
+	"code.google.com/p/go.text/unicode/norm"
 	"github.com/kylemcc/twitter-text-go/extract"
 	"strings"
 	"unicode/utf8"
@@ -12,6 +13,8 @@ const (
 	shortUrlLength      = 22
 	shortHttpsUrlLength = 23
 )
+
+var formC = norm.NFC
 
 // Returns the length of the string as it would be displayed. This is equivilent to the length of the Unicode NFC
 // (See: http://www.unicode.org/reports/tr15). This is needed in order to consistently calculate the length of a
@@ -25,9 +28,7 @@ const (
 //
 // The string could also contain U+00E9 already, in which case the canonicalization will not change the value.
 func TweetLength(text string) int {
-    // TODO: input may require normalization. Will have to research
-    // Go's implementation
-	length := utf8.RuneCountInString(text)
+	length := utf8.RuneCountInString(formC.String(text))
 
 	urls := extract.ExtractUrls(text)
 	for _, url := range urls {
