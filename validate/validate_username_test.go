@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestTweetIsValid(t *testing.T) {
+func TestUsernameIsValid(t *testing.T) {
 	contents, err := ioutil.ReadFile(validateYmlPath)
 	if err != nil {
 		t.Errorf("Error reading validate.yml: %v", err)
@@ -22,21 +22,21 @@ func TestTweetIsValid(t *testing.T) {
 		t.FailNow()
 	}
 
-	tweetTests, ok := tests.(map[interface{}]interface{})["tweets"]
+	usernameTests, ok := tests.(map[interface{}]interface{})["usernames"]
 	if !ok {
-		t.Errorf("Conformance file did not contain tweet tests")
+		t.Errorf("Conformance file did not contain username tests")
 		t.FailNow()
 	}
 
-	for _, testCase := range tweetTests.([]interface{}) {
+	for _, testCase := range usernameTests.([]interface{}) {
 		test := testCase.(map[interface{}]interface{})
 		text, _ := test["text"]
 		description, _ := test["description"]
 		expected, _ := test["expected"]
 
-		actual := TweetIsValid(text.(string))
+		actual := UsernameIsValid(text.(string))
 		if actual != expected {
-			t.Errorf("TweetIsValid returned incorrect value for test [%s]. Expected:%v Got:%v", description, expected, actual)
+			t.Errorf("UsernameIsValid returned incorrect value for test [%s]. Expected:%v Got:%v", description, expected, actual)
 		}
 	}
 }

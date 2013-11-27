@@ -90,7 +90,12 @@ func ValidateTweet(text string) error {
 }
 
 func UsernameIsValid(username string) bool {
-	return false
+    if username == "" {
+        return false
+    }
+
+    extracted := extract.ExtractMentionedScreenNames(username)
+    return len(extracted) == 1 && extracted[0].Text == username
 }
 
 func ListIsValid(list string) bool {
