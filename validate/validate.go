@@ -108,7 +108,12 @@ func ListIsValid(list string) bool {
 }
 
 func HashtagIsValid(hashtag string) bool {
-	return false
+    if hashtag == "" {
+        return false
+    }
+
+    extracted := extract.ExtractHashtags(hashtag)
+    return len(extracted) == 1 && extracted[0].Text == hashtag
 }
 
 func UrlIsValid(url string) bool {
