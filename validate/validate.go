@@ -90,16 +90,21 @@ func ValidateTweet(text string) error {
 }
 
 func UsernameIsValid(username string) bool {
-    if username == "" {
-        return false
-    }
+	if username == "" {
+		return false
+	}
 
-    extracted := extract.ExtractMentionedScreenNames(username)
-    return len(extracted) == 1 && extracted[0].Text == username
+	extracted := extract.ExtractMentionedScreenNames(username)
+	return len(extracted) == 1 && extracted[0].Text == username
 }
 
 func ListIsValid(list string) bool {
-	return false
+	if list == "" {
+		return false
+	}
+
+	extracted := extract.ExtractMentionsOrLists(list)
+	return len(extracted) == 1 && extracted[0].Text == list && extracted[0].ListSlug != ""
 }
 
 func HashtagIsValid(hashtag string) bool {
