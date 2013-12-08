@@ -108,14 +108,57 @@ func ListIsValid(list string) bool {
 }
 
 func HashtagIsValid(hashtag string) bool {
-    if hashtag == "" {
-        return false
-    }
+	if hashtag == "" {
+		return false
+	}
 
-    extracted := extract.ExtractHashtags(hashtag)
-    return len(extracted) == 1 && extracted[0].Text == hashtag
+	extracted := extract.ExtractHashtags(hashtag)
+	return len(extracted) == 1 && extracted[0].Text == hashtag
 }
 
-func UrlIsValid(url string) bool {
-	return false
+func UrlIsValid(url string, requireProtocol bool, allowUnicode bool) bool {
+	if url == "" {
+		return false
+	}
+
+	match := validateUrlUnencodedRe.FindStringSubmatchIndex(url)
+	if match == nil || url[match[0]:match[1]] != url {
+		return false
+	}
+
+	if requireProtocol {
+		schemeStart := match[validateUrlUnencodedGroupScheme*2]
+		schemeEnd := match[validateUrlUnencodedGroupScheme*2+1]
+		if !protocolRe.MatchString(url[schemeStart:schemeEnd]) {
+			return false
+		}
+	}
+
+	pathStart := match[validateUrlUnencodedGroupPath*2]
+	pathEnd := match[validateUrlUnencodedGroupPath*2+1]
+	if !validateUrlPathRe.MatchString(url[pathStart:pathEnd]) {
+		return false
+	}
+
+	queryStart := match[validateUrlUnencodedGroupQuery*2]
+	queryEnd := match[validateUrlUnencodedGroupQuery*2+1]
+	if queryStart > 0 && !validateUrlQueryRe.MatchString(url[queryStart:queryEnd]) {
+		return false
+	}
+
+	fragmentStart := match[validateUrlUnencodedGroupFragment*2]
+	fragmentEnd := match[validateUrlUnencodedGroupFragment*2+1]
+	if fragmentStart > 0 && !validateUrlFragmentRe.MatchString(url[fragmentStart:fragmentEnd]) {
+		return false
+	}
+
+	authorityStart := match[validateUrlUnencodedGroupAuthority*2]
+	authorityEnd := match[validateUrlUnencodedGroupAuthority*2+1]
+	authority := url[authorityStart:authorityEnd]
+
+	if allowUnicode {
+		return validateUrlUnicodeAuthorityRe.MatchString(authority)
+	} else {
+		return validateUrlAuthorityRe.MatchString(authority)
+	}
 }
