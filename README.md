@@ -3,9 +3,9 @@ Twitter-text-go is a [Go](http://golang.org/) port of the various twitter-text h
 
 ## Installation ##
 
-Currently, only extraction has been implemented. Install the extract package using the "go get" command:
+Currently, only extraction and validation have been implemented. Install those packages using the "go get" command:
 
-	go get github.com/kylemcc/twitter-text-go/extract
+	go get github.com/kylemcc/twitter-text-go/{validate,extract}
 
 ## Documentation ##
 
@@ -17,6 +17,13 @@ Implement the rest of the twitter-text APIs: Validation, Auto-linking, and Hit H
 
 ## Contributing ##
 Pull requests welcome.
+
+## Testing ##
+The unit tests rely on the [twitter-text-conformance](https://github.com/twitter/twitter-text-conformance) project. To add this project as a submodule, run the following from the root of the project:
+
+	git submodule add git@github.com:twitter/twitter-text-conformance.git
+	git submodule init
+	git submodule update
 
 ## License ##
 
