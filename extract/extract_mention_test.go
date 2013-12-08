@@ -44,7 +44,7 @@ func TestExtractMentions(t *testing.T) {
 
 		for n, e := range expected {
 			actual := result[n]
-			if actual.ScreenName != e {
+			if actual.screenName != e {
 				t.Errorf("ExtractMentionedScreenNames returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, e, actual.Text)
 			}
 
@@ -104,7 +104,7 @@ func TestExtractMentionsWithIndices(t *testing.T) {
 				continue
 			}
 
-			if actual.ScreenName != mention {
+			if actual.screenName != mention {
 				t.Errorf("ExtractMentionedScreenNames returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, mention, actual.ScreenName)
 			}
 
@@ -183,11 +183,11 @@ func TestExtractMentionsOrListsWithIndices(t *testing.T) {
 				continue
 			}
 
-			if actual.ScreenName != mention {
+			if actual.screenName != mention {
 				t.Errorf("ExtractMentionedScreenNames returned incorrect ScreenName value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, mention, actual.ScreenName)
 			}
 
-			if actual.ListSlug != listSlug {
+			if actual.listSlug != listSlug {
 				t.Errorf("ExtractMentionedScreenNames returned incorrect ListSlug value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, listSlug, actual.ListSlug)
 			}
 
@@ -239,7 +239,7 @@ func TestExtractReplyScreenname(t *testing.T) {
 				t.Errorf("ExtractReplyScreenname did not return the expected result for text [%s]: %v", test.Text, test.Expected)
 			}
 		} else {
-			if result.ScreenName != test.Expected {
+			if result.screenName != test.Expected {
 				t.Errorf("ExtractReplyScreenname returned incorrect value for test: [%s]. Expected:[%v] Got:[%v]\n", test.Text, test.Expected, result.Text)
 			}
 

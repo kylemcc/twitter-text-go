@@ -44,7 +44,7 @@ func TestExtractCashtags(t *testing.T) {
 
 		for n, e := range expected {
 			actual := result[n]
-			if actual.Cashtag != e {
+			if actual.cashtag != e {
 				t.Errorf("ExtractCashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, e, actual.Cashtag)
 			}
 
@@ -104,7 +104,7 @@ func TestExtractCashtagsWithIndices(t *testing.T) {
 				continue
 			}
 
-			if actual.Cashtag != cashtag {
+			if actual.cashtag != cashtag {
 				t.Errorf("ExtractCashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, cashtag, actual.Cashtag)
 			}
 

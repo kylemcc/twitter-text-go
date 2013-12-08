@@ -59,10 +59,15 @@ type TwitterEntity struct {
 	ByteRange Range  // Represents the location of the entity in byte offsets
 	Type      EntityType
 
-	ScreenName string // Contains the value of username without the leading '@' when Type=MENTION
-	ListSlug   string // Contains the value of the list name when Type=MENTION
-	Hashtag    string // Contains the value of the hashtag without the leading # when Type=HASH_TAG
-	Cashtag    string // Contains the value of the cashtag without the leading $ when Type=CASH_TAG
+	screenName string // Contains the value of username without the leading '@' when Type=MENTION
+	listSlug   string // Contains the value of the list name when Type=MENTION
+	hashtag    string // Contains the value of the hashtag without the leading # when Type=HASH_TAG
+	cashtag    string // Contains the value of the cashtag without the leading $ when Type=CASH_TAG
+
+	screenNameIsSet bool
+	listSlugIsSet   bool
+	hashtagIsSet    bool
+	cashtagIsSet    bool
 }
 
 type entitiesT []*TwitterEntity
@@ -115,6 +120,35 @@ func (e entitiesT) Swap(i, j int) {
 
 func (t *TwitterEntity) String() string {
 	return fmt.Sprintf("TwitterEntity{Text: [%s] Range: %+v Type: %v", t.Text, t.Range, t.Type)
+}
+
+// Returns the value of the extracted screen name (when Type=MENTION) and
+// a boolean indicating whether the value is set. The return value will be
+// ("", false) when Type != MENTION
+func (t *TwitterEntity) ScreenName() (string, bool) {
+	return t.screenName, t.screenNameIsSet
+}
+
+// Returns the value of the extracted list name (when Type=MENTION) and
+// a boolean indicating whether the value is set. The return value will be
+// ("", false) when Type != MENTION OR when the extracted entity is simply
+// a mention and not a list name
+func (t *TwitterEntity) ListSlug() (string, bool) {
+	return t.listSlug, t.listSlugIsSet
+}
+
+// Returns the value of the extracted hashtag (when Type=HASH_TAG) and
+// a boolean indicating whether the value is set. The return value will be
+// ("", false) when Type != HASH_TAG
+func (t *TwitterEntity) Hashtag() (string, bool) {
+	return t.hashtag, t.hashtagIsSet
+}
+
+// Returns the value of the extracted cashtag (when Type=CASH_TAG) and
+// a boolean indicating whether the value is set. The return value will be
+// ("", false) when Type != CASH_TAG
+func (t *TwitterEntity) Cashtag() (string, bool) {
+	return t.cashtag, t.cashtagIsSet
 }
 
 func ExtractEntities(text string) []*TwitterEntity {
@@ -255,7 +289,7 @@ func ExtractMentionedScreenNames(text string) []*TwitterEntity {
 	mentionsOrLists := ExtractMentionsOrLists(text)
 	var result []*TwitterEntity
 	for _, e := range mentionsOrLists {
-		if e.ListSlug == "" {
+		if !e.listSlugIsSet {
 			result = append(result, e)
 		}
 	}
@@ -299,9 +333,11 @@ func ExtractMentionsOrLists(text string) []*TwitterEntity {
 		}
 
 		result = append(result, &TwitterEntity{
-			Text:       text[start:stop],
-			ScreenName: text[screennameStart:screennameEnd],
-			ListSlug:   slug,
+			Text:            text[start:stop],
+			screenName:      text[screennameStart:screennameEnd],
+			screenNameIsSet: true,
+			listSlug:        slug,
+			listSlugIsSet:   slug != "",
 			ByteRange: Range{
 				Start: start,
 				Stop:  stop},
@@ -324,8 +360,9 @@ func ExtractReplyScreenname(text string) *TwitterEntity {
 		screennameStart := match[validReplyGroupUsername*2]
 		screennameEnd := match[validReplyGroupUsername*2+1]
 		entity := &TwitterEntity{
-			Text:       text[atSignStart:screennameEnd],
-			ScreenName: text[screennameStart:screennameEnd],
+			Text:            text[atSignStart:screennameEnd],
+			screenName:      text[screennameStart:screennameEnd],
+			screenNameIsSet: true,
 			ByteRange: Range{
 				Start: atSignStart,
 				Stop:  screennameEnd},
@@ -365,8 +402,9 @@ func extractHashtags(text string, checkUrlOverlap bool) []*TwitterEntity {
 		hashtagStart = match[validHashtagGroupTag*2]
 		hashtagEnd = match[validHashtagGroupTag*2+1]
 		result = append(result, &TwitterEntity{
-			Text:    text[hashStart:hashtagEnd],
-			Hashtag: text[hashtagStart:hashtagEnd],
+			Text:         text[hashStart:hashtagEnd],
+			hashtag:      text[hashtagStart:hashtagEnd],
+			hashtagIsSet: true,
 			ByteRange: Range{
 				Start: hashStart,
 				Stop:  hashtagEnd,
@@ -444,8 +482,9 @@ func ExtractCashtags(text string) []*TwitterEntity {
 		nextOffset = cashtagEnd + offset - 1
 
 		result = append(result, &TwitterEntity{
-			Text:    substr[cashtagStart-1 : cashtagEnd],
-			Cashtag: substr[cashtagStart:cashtagEnd],
+			Text:         substr[cashtagStart-1 : cashtagEnd],
+			cashtag:      substr[cashtagStart:cashtagEnd],
+			cashtagIsSet: true,
 			ByteRange: Range{
 				Start: cashtagStart + offset - 1,
 				Stop:  cashtagEnd + offset,

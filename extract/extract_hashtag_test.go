@@ -44,7 +44,7 @@ func TestExtractHashtags(t *testing.T) {
 
 		for n, e := range expected {
 			actual := result[n]
-			if actual.Hashtag != e {
+			if actual.hashtag != e {
 				t.Errorf("ExtractHashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, e, actual.Hashtag)
 			}
 
@@ -104,7 +104,7 @@ func TestExtractHashtagsWithIndices(t *testing.T) {
 				continue
 			}
 
-			if actual.Hashtag != hashtag {
+			if actual.hashtag != hashtag {
 				t.Errorf("ExtractHashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, hashtag, actual.Hashtag)
 			}
 
