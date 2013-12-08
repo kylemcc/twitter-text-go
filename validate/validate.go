@@ -104,7 +104,13 @@ func ListIsValid(list string) bool {
 	}
 
 	extracted := extract.ExtractMentionsOrLists(list)
-	return len(extracted) == 1 && extracted[0].Text == list && extracted[0].ListSlug != ""
+	if len(extracted) == 1 {
+        e := extracted[0]
+        if _, ok := e.ListSlug(); ok && e.Text == list {
+            return true
+        }
+    }
+    return false
 }
 
 func HashtagIsValid(hashtag string) bool {
