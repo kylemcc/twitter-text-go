@@ -13,7 +13,7 @@ Currently, only extraction and validation have been implemented. Install those p
 
 ## Todo ##
 
-Implement the rest of the twitter-text APIs: Validation, Auto-linking, and Hit Highlighting
+Implement the rest of the twitter-text APIs: Auto-linking and Hit Highlighting
 
 ## Contributing ##
 Pull requests welcome.
