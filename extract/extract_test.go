@@ -38,7 +38,7 @@ func ExampleExtractMentionedScreenNames() {
 	text := "mention @user1 @user2 and @user3"
 	entities := extract.ExtractMentionedScreenNames(text)
 	for i, e := range entities {
-        sn, _ := e.ScreenName()
+		sn, _ := e.ScreenName()
 		fmt.Printf("Match[%d]:%s Screenname:%s Range:%s\n", i, e.Text, sn, e.Range)
 	}
 
