@@ -15,19 +15,24 @@ import (
 	"unicode/utf8"
 )
 
+// Used to specify offsets in a string where entities
+// are located
 type Range struct {
 	Start int
 	Stop  int
 }
 
+// Returns the length of the range
 func (r *Range) Length() int {
 	return r.Stop - r.Start
 }
 
+// Implement the Stringer interface
 func (r Range) String() string {
 	return fmt.Sprintf("(%d, %d)", r.Start, r.Stop)
 }
 
+// Specifies the type of a given entity
 type EntityType int
 
 const (
@@ -37,6 +42,7 @@ const (
 	URL
 )
 
+// Implement the Stringer interface
 func (t EntityType) String() string {
 	switch t {
 	case MENTION:
@@ -118,6 +124,7 @@ func (e entitiesT) Swap(i, j int) {
 	e[i], e[j] = e[j], e[i]
 }
 
+// Implement the Stringer interface
 func (t *TwitterEntity) String() string {
 	return fmt.Sprintf("TwitterEntity{Text: [%s] Range: %+v Type: %v", t.Text, t.Range, t.Type)
 }
@@ -151,6 +158,9 @@ func (t *TwitterEntity) Cashtag() (string, bool) {
 	return t.cashtag, t.cashtagIsSet
 }
 
+// Extract all usernames, lists, hashtags, and URLs from the
+// given text - returned in the order they appear within the
+// input string
 func ExtractEntities(text string) []*TwitterEntity {
 	var result entitiesT
 	result = ExtractUrls(text)

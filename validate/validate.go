@@ -18,18 +18,25 @@ const (
 
 var formC = norm.NFC
 
+// Validation error returned when text is too long to be a valid tweet.
+// The value of the error is the actual length of the input string
 type TooLongError int
 
 func (e TooLongError) Error() string {
 	return fmt.Sprintf("Length %d exceeds %d characters", int(e), maxLength)
 }
 
+// Validation error returned when text is empty
 type EmptyError struct{}
 
 func (e EmptyError) Error() string {
 	return "Tweets may not be empty"
 }
 
+// Validation error returned when text contains an invalid character
+//
+// This error embeds the value of the invalid character, and its
+// byte-offset within the input string
 type InvalidCharacterError struct {
 	Character rune
 	Offset    int
@@ -89,6 +96,7 @@ func ValidateTweet(text string) error {
 	return nil
 }
 
+// Returns true if the given text represents a valid @username
 func UsernameIsValid(username string) bool {
 	if username == "" {
 		return false
@@ -98,6 +106,8 @@ func UsernameIsValid(username string) bool {
 	return len(extracted) == 1 && extracted[0].Text == username
 }
 
+// Returns true if the given text represents a valid
+// @twitter/list
 func ListIsValid(list string) bool {
 	if list == "" {
 		return false
@@ -113,6 +123,7 @@ func ListIsValid(list string) bool {
 	return false
 }
 
+// Returns true if the given text represents a valid #hashtag
 func HashtagIsValid(hashtag string) bool {
 	if hashtag == "" {
 		return false
@@ -122,6 +133,7 @@ func HashtagIsValid(hashtag string) bool {
 	return len(extracted) == 1 && extracted[0].Text == hashtag
 }
 
+// Returns true if the given text represents a valid URL
 func UrlIsValid(url string, requireProtocol bool, allowUnicode bool) bool {
 	if url == "" {
 		return false
