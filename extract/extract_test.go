@@ -19,6 +19,7 @@ type Test struct {
 var cwd, _ = os.Getwd()
 var parentDir = path.Dir(cwd)
 var extractYmlPath = path.Join(parentDir, "conformance", "extract.yml")
+var tldYmlPath = path.Join(parentDir, "conformance", "tlds.yml")
 
 func ExampleExtractEntities() {
 	text := "tweet mentioning @username with a url http://t.co/abcde and a #hashtag"
