@@ -2,11 +2,12 @@
 package validate
 
 import (
-	"code.google.com/p/go.text/unicode/norm"
 	"fmt"
-	"github.com/kylemcc/twitter-text-go/extract"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/kylemcc/twitter-text-go/extract"
+	"golang.org/x/text/unicode/norm"
 )
 
 const (
