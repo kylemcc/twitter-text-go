@@ -31,40 +31,36 @@ const (
 		"\u0300-\u036f" + // Combining diacritics
 		"\u1e00-\u1eff" // Latin Extended Additional (mostly for Vietnamese)
 
-	hashtagAlphaChars = `a-z` + latinAccentChars +
-		"\u0400-\u04ff\u0500-\u0527" + // Cyrillic
-		"\u2de0-\u2dff\ua640-\ua69f" + // Cyrillic Extended A/B
-		"\u0591-\u05bf\u05c1-\u05c2\u05c4-\u05c5\u05c7" +
-		"\u05d0-\u05ea\u05f0-\u05f4" + // Hebrew
-		"\ufb1d-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41" +
-		"\ufb43-\ufb44\ufb46-\ufb4f" + // Hebrew Pres. Forms
-		"\u0610-\u061a\u0620-\u065f\u066e-\u06d3\u06d5-\u06dc" +
-		"\u06de-\u06e8\u06ea-\u06ef\u06fa-\u06fc\u06ff" + // Arabic
-		"\u0750-\u077f\u08a0\u08a2-\u08ac\u08e4-\u08fe" + // Arabic Supplement and Extended A
-		"\ufb50-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb" + // Pres. Forms A
-		"\ufe70-\ufe74\ufe76-\ufefc" + // Pres. Forms B
-		"\u200c" + // Zero-Width Non-Joiner
-		"\u0e01-\u0e3a\u0e40-\u0e4e" + // Thai
-		"\u1100-\u11ff\u3130-\u3185\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF" + // Hangul (Korean)
-		`\p{Hiragana}` + // Japanese Hiragana
-		"\u30a1-\u30fa\u30fc-\u30fe" + // Katakana (full-width)
-		"\uff66-\uff9f" + // Katakana (half-width)
-		"\uff10-\uff19\uff21-\uff3a\uff41-\uff5a" + // Latin (full-width)
-		"\u3400-\u4dbf" + // Kanji (CJK Extension A)
-		"\u4E00-\u9FFF" + // Kanji (Unified)
-		"\U00020000-\U0002A6DF" + // Kanji (CJK Extension B)
-		"\U0002A700-\U0002B73F" + // Kanji (CJK Extension C)
-		"\U0002B740-\U0002B81F" + // Kanji (CJK Extension D)
-		"\U0002F800-\U0002FA1F" + // Kanji (CJK supplement)
-		"\u3003\u3005\u303b" + // Kanji/Han iteration marks
-		"\uff21-\uff3a\uff41-\uff5a" + // full width Alphabet
-		"\uff66-\uff9f" + // half width Katakana
-		"\uffa1-\uffdc" // half width Hangul (Korean)
+	//
+	// Hashtag
+	//
 
-	hashtagAlphaNumericChars = "0-9_\uff10-\uff19" + hashtagAlphaChars
+	hashtagAlphaChars   = `\p{L}\p{M}`
+	hashtagAlphaSet     = `[` + hashtagAlphaChars + `]`
+	hashtagNumericChars = `\p{Nd}`
+	hashtagSpecialChars = `_` +
+		"\u200c" + // ZERO WIDTH NON-JOINER (ZWNJ)
+		"\u200d" + // ZERO WIDTH JOINER (ZWJ)
+		"\ua67e" + // CYRILLIC KAVYKA
+		"\u05be" + // HEBREW PUNCTUATION MAQAF
+		"\u05f3" + // HEBREW PUNCTUATION GERESH
+		"\u05f4" + // HEBREW PUNCTUATION GERSHAYIM
+		"\u309b" + // KATAKANA-HIRAGANA VOICED SOUND MARK
+		"\u309c" + // KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK
+		"\u30a0" + // KATAKANA-HIRAGANA DOUBLE HYPHEN
+		"\u30fb" + // KATAKANA MIDDLE DOT
+		"\u3003" + // DITTO MARK
+		"\u0f0b" + // TIBETAN MARK INTERSYLLABIC TSHEG
+		"\u0f0c" + // TIBETAN MARK DELIMITER TSHEG BSTAR
+		"\u00b7" // MIDDLE DOT
 
-	hashtagAlphaSet        = `[` + hashtagAlphaChars + `]`
-	hashtagAlphaNumericSet = `[` + hashtagAlphaNumericChars + `]`
+	hashtagAlphaNumericSet      = `[` + hashtagAlphaChars + hashtagNumericChars + hashtagSpecialChars + `]`
+	hashtagBoundaryInvalidChars = `&` + hashtagAlphaChars + hashtagNumericChars + hashtagSpecialChars
+	hashtagBoundary             = `^|$|[^` + hashtagBoundaryInvalidChars + `]`
+
+	//
+	// URL
+	//
 
 	urlValidPrecedingChars = `(?:[^[:alnum:]@＠$#＃` + "\u202A-\u202E]|^)"
 	urlValidChars          = `[^` + punctuationChars + `[:space:][:cntrl:]` + invalidChars + unicodeSpaces + `]`
@@ -188,9 +184,8 @@ const (
 	cashTag        = `[a-z]{1,6}(?:[\._][a-z]{1,2})?`
 
 	// Capturing groups
-	validHashtagGroupBefore = 1
-	validHashtagGroupHash   = 2
-	validHashtagGroupTag    = 3
+	validHashtagGroupHash = 1
+	validHashtagGroupTag  = 2
 
 	validMentionOrListGroupBefore   = 1
 	validMentionOrListGroupAt       = 2
@@ -217,7 +212,7 @@ const (
 var (
 
 	// Hash tag
-	validHashtag           = regexp.MustCompile(`(?i)(^|[^&` + hashtagAlphaNumericChars + "])(#|\uFF03)(" + hashtagAlphaNumericSet + `*` + hashtagAlphaSet + hashtagAlphaNumericSet + `*)`)
+	validHashtag           = regexp.MustCompile(`(?i)(?:` + hashtagBoundary + `)` + `([#＃])(` + hashtagAlphaNumericSet + `*` + hashtagAlphaSet + hashtagAlphaNumericSet + `*)`)
 	invalidHashtagMatchEnd = regexp.MustCompile(`\A(?:[#＃]|://)`)
 	rtlCharacters          = regexp.MustCompile("[\u0600-\u06FF\u0750-\u077F\u0590-\u05FF\uFE70-\uFEFF]")
 
