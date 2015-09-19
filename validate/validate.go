@@ -12,7 +12,7 @@ import (
 
 const (
 	maxLength           = 140
-	shortUrlLength      = 22
+	shortUrlLength      = 23
 	shortHttpsUrlLength = 23
 	invalidChars        = "\uFFFE\uFEFF\uFFFF\u202A\u202B\u202C\u202D\u202E"
 )
