@@ -16,6 +16,9 @@ func TestUrlIsValid(t *testing.T) {
 
 	var testData map[interface{}]interface{}
 	err = goyaml.Unmarshal(contents, &testData)
+	if err != nil {
+		t.Fatalf("error unmarshaling data: %v\n", err)
+	}
 
 	tests, ok := testData["tests"]
 	if !ok {
@@ -51,6 +54,9 @@ func TestUrlWithoutProtocol(t *testing.T) {
 
 	var testData map[interface{}]interface{}
 	err = goyaml.Unmarshal(contents, &testData)
+	if err != nil {
+		t.Fatalf("error unmarshaling data: %v\n", err)
+	}
 
 	tests, ok := testData["tests"]
 	if !ok {
