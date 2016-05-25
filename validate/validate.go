@@ -47,7 +47,7 @@ func (e InvalidCharacterError) Error() string {
 	return fmt.Sprintf("Invalid chararcter [%s] found at byte offset %d", e.Character, e.Offset)
 }
 
-// Returns the length of the string as it would be displayed. This is equivilent to the length of the Unicode NFC
+// Returns the length of the string as it would be displayed. This is equivalent to the length of the Unicode NFC
 // (See: http://www.unicode.org/reports/tr15). This is needed in order to consistently calculate the length of a
 // string no matter which actual form was transmitted. For example:
 //
@@ -55,7 +55,7 @@ func (e InvalidCharacterError) Error() string {
 // +   U+0301  Combining Acute Accent
 // ----------
 // =   2 bytes, 2 characters, displayed as é (1 visual glyph)
-//     … The NFC of {U+0065, U+0301} is {U+00E9}, which is a single chracter and a +display_length+ of 1
+//     … The NFC of {U+0065, U+0301} is {U+00E9}, which is a single character and a +display_length+ of 1
 //
 // The string could also contain U+00E9 already, in which case the canonicalization will not change the value.
 func TweetLength(text string) int {

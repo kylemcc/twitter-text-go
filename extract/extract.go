@@ -361,7 +361,7 @@ func ExtractMentionsOrLists(text string) []*TwitterEntity {
 }
 
 // Extracts an @username mention from the beginning of the supplied text. A reply
-// is defined as the occurence of a mention (@username) at the beginning of a
+// is defined as the occurrence of a mention (@username) at the beginning of a
 // tweet preceded by 0 or more spaces.
 //
 // Returns a pointer to a TwitterEntity struct
@@ -388,7 +388,7 @@ func ExtractReplyScreenname(text string) *TwitterEntity {
 	return nil
 }
 
-// Extracts #hashtag occurences from the supplied text. Returns a slice
+// Extracts #hashtag occurrences from the supplied text. Returns a slice
 // of TwitterEntity struct pointers.
 //
 // The Hashtag field of the returned entities will contain the value
@@ -453,7 +453,7 @@ func extractHashtags(text string, checkUrlOverlap bool) []*TwitterEntity {
 	return result
 }
 
-// Extracts $cashtag occurences from the supplied text. Returns a slice
+// Extracts $cashtag occurrences from the supplied text. Returns a slice
 // of TwitterEntity struct pointers.
 //
 // The Cashtag field of the returned entities will contain the value

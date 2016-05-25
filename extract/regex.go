@@ -166,7 +166,7 @@ const (
 	urlValidUrlQueryEndingChars = `[a-z0-9_&=#/]`
 
 	validUrlPattern = `(` + //  $1 total match
-		`(` + urlValidPrecedingChars + `)` + //  $2 Preceeding chracter
+		`(` + urlValidPrecedingChars + `)` + //  $2 Preceding character
 		`(` + //  $3 URL
 		`(https?://)?` + //  $4 Protocol (optional)
 		`(` + urlValidDomain + `)` + //  $5 Domain(s)
