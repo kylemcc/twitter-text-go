@@ -46,7 +46,7 @@ func TestExtractHashtags(t *testing.T) {
 		for n, e := range expected {
 			actual := result[n]
 			if actual.hashtag != e {
-				t.Errorf("ExtractHashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, e, actual.Hashtag)
+				t.Errorf("ExtractHashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, e, actual.hashtag)
 			}
 
 			if actual.Type != HASH_TAG {
@@ -106,7 +106,7 @@ func TestExtractHashtagsWithIndices(t *testing.T) {
 			}
 
 			if actual.hashtag != hashtag {
-				t.Errorf("ExtractHashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, hashtag, actual.Hashtag)
+				t.Errorf("ExtractHashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, hashtag, actual.hashtag)
 			}
 
 			indices, ok := expectedMap["indices"]

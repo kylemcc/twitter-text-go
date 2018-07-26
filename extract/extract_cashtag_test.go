@@ -46,7 +46,7 @@ func TestExtractCashtags(t *testing.T) {
 		for n, e := range expected {
 			actual := result[n]
 			if actual.cashtag != e {
-				t.Errorf("ExtractCashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, e, actual.Cashtag)
+				t.Errorf("ExtractCashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, e, actual.cashtag)
 			}
 
 			if actual.Type != CASH_TAG {
@@ -106,7 +106,7 @@ func TestExtractCashtagsWithIndices(t *testing.T) {
 			}
 
 			if actual.cashtag != cashtag {
-				t.Errorf("ExtractCashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, cashtag, actual.Cashtag)
+				t.Errorf("ExtractCashtags returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, cashtag, actual.cashtag)
 			}
 
 			indices, ok := expectedMap["indices"]
