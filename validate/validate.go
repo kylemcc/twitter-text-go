@@ -44,7 +44,7 @@ type InvalidCharacterError struct {
 }
 
 func (e InvalidCharacterError) Error() string {
-	return fmt.Sprintf("Invalid chararcter [%s] found at byte offset %d", e.Character, e.Offset)
+	return fmt.Sprintf("Invalid chararcter [%s] found at byte offset %d", string(e.Character), e.Offset)
 }
 
 // Returns the length of the string as it would be displayed. This is equivalent to the length of the Unicode NFC

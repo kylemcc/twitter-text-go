@@ -106,7 +106,7 @@ func TestExtractMentionsWithIndices(t *testing.T) {
 			}
 
 			if actual.screenName != mention {
-				t.Errorf("ExtractMentionedScreenNames returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, mention, actual.ScreenName)
+				t.Errorf("ExtractMentionedScreenNames returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, mention, actual.screenName)
 			}
 
 			indices, ok := expectedMap["indices"]
@@ -185,11 +185,11 @@ func TestExtractMentionsOrListsWithIndices(t *testing.T) {
 			}
 
 			if actual.screenName != mention {
-				t.Errorf("ExtractMentionedScreenNames returned incorrect ScreenName value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, mention, actual.ScreenName)
+				t.Errorf("ExtractMentionedScreenNames returned incorrect ScreenName value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, mention, actual.screenName)
 			}
 
 			if actual.listSlug != listSlug {
-				t.Errorf("ExtractMentionedScreenNames returned incorrect ListSlug value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, listSlug, actual.ListSlug)
+				t.Errorf("ExtractMentionedScreenNames returned incorrect ListSlug value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, listSlug, actual.listSlug)
 			}
 
 			indices, ok := expectedMap["indices"]
