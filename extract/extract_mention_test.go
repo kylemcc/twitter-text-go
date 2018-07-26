@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"launchpad.net/goyaml"
+	goyaml "gopkg.in/yaml.v1"
 )
 
 func TestExtractMentions(t *testing.T) {

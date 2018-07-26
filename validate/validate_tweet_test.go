@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"launchpad.net/goyaml"
+	goyaml "gopkg.in/yaml.v1"
 )
 
 func TestTweetIsValid(t *testing.T) {
