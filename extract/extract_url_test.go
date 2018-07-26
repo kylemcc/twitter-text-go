@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	goyaml "github.com/go-yaml/go-yaml-v1"
+	goyaml "gopkg.in/yaml.v1"
 )
 
 func TestExtractUrls(t *testing.T) {
