@@ -4,7 +4,7 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"launchpad.net/goyaml"
+	goyaml "github.com/go-yaml/go-yaml-v1"
 )
 
 func TestTweetLength(t *testing.T) {
