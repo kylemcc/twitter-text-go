@@ -39,9 +39,9 @@ func TestTweetLength(t *testing.T) {
 		expected := test["expected"]
 		length := expected.(map[interface{}]interface{})["weightedLength"]
 
-		actual := TweetLength(text.(string))
-		if actual != length {
-			t.Errorf("TweetLength returned incorrect value for test [%s]. Expected:%v Got:%v", description, expected, actual)
+		actual, _ := ParseTweet(text.(string))
+		if actual.WeightedLength != length {
+			t.Errorf("TweetWeightedLength returned incorrect value for test [%s]. Expected:%v Got:%v", description, length, actual.WeightedLength)
 		}
 	}
 }

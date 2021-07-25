@@ -234,8 +234,13 @@ func ExtractUrls(text string) []*TwitterEntity {
 			// Make sure the protocol-less domain is ascii only
 			// e.g., in the case of "한국twitter.com", only extract twitter.com
 			if m := validAsciiDomain.FindStringSubmatchIndex(substr[domainStart:domainEnd]); m != nil {
+
+				text := substr[matchStart+m[0] : matchStart+m[1]]
+				if !areDomainLengthsValid(text) {
+					continue
+				}
 				lastEntity = &TwitterEntity{
-					Text: substr[matchStart+m[0] : matchStart+m[1]],
+					Text: text,
 					ByteRange: Range{
 						Start: matchStart + offset + m[0],
 						Stop:  matchStart + offset + m[1]},
@@ -278,6 +283,9 @@ func ExtractUrls(text string) []*TwitterEntity {
 				url = url[tcoLoc[0]:tcoLoc[1]]
 				matchEnd = matchStart + len(url)
 			}
+			if !areDomainLengthsValid(url) {
+				continue
+			}
 			result = append(result,
 				&TwitterEntity{Text: url,
 					ByteRange: Range{
@@ -290,6 +298,17 @@ func ExtractUrls(text string) []*TwitterEntity {
 	// Add character/rune offsets in addition to byte offsets
 	result.fixIndices(text)
 	return result
+}
+
+func areDomainLengthsValid(domain string) bool {
+	domainLabels := strings.Split(domain, ".")
+	const MAX_DOMAIN_LABEL_LENGTH = 63
+	for _, label := range domainLabels {
+		if len(label) > MAX_DOMAIN_LABEL_LENGTH {
+			return false
+		}
+	}
+	return true
 }
 
 // Extracts @username mentions from the supplied text. Returns a slice
