@@ -26,7 +26,7 @@ func TestTweetLength(t *testing.T) {
 		t.FailNow()
 	}
 
-	lengthTests, ok := tests.(map[interface{}]interface{})["lengths"]
+	lengthTests, ok := tests.(map[interface{}]interface{})["WeightedTweetsCounterTest"]
 	if !ok {
 		t.Errorf("Conformance file did not contain length tests")
 		t.FailNow()
@@ -34,12 +34,13 @@ func TestTweetLength(t *testing.T) {
 
 	for _, testCase := range lengthTests.([]interface{}) {
 		test := testCase.(map[interface{}]interface{})
-		text, _ := test["text"]
-		description, _ := test["description"]
-		expected, _ := test["expected"]
+		text := test["text"]
+		description := test["description"]
+		expected := test["expected"]
+		length := expected.(map[interface{}]interface{})["weightedLength"]
 
 		actual := TweetLength(text.(string))
-		if actual != expected {
+		if actual != length {
 			t.Errorf("TweetLength returned incorrect value for test [%s]. Expected:%v Got:%v", description, expected, actual)
 		}
 	}
