@@ -39,7 +39,7 @@ func TestExtractUrls(t *testing.T) {
 		}
 
 		if len(result) != len(expected) {
-			t.Errorf("Wrong number of entities returned for text [%s]. Expected:%v Got:%v.\n", test.Text, expected, result)
+			t.Errorf("Wrong number of entities returned for text [%s]. Expected:%v Got:%v.\n", test.Description, expected, result)
 			continue
 		}
 
@@ -47,7 +47,7 @@ func TestExtractUrls(t *testing.T) {
 			actual := result[n]
 			tmpValue := e.(string)
 			if actual.Text != tmpValue {
-				t.Errorf("ExtractUrls returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Text, tmpValue, actual.Text)
+				t.Errorf("ExtractUrls returned incorrect value for test: [%s]. Expected:[%s] Got:[%s]\n", test.Description, tmpValue, actual.Text)
 			}
 
 			if actual.Type != URL {

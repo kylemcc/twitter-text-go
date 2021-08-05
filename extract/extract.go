@@ -250,9 +250,7 @@ func ExtractUrls(text string) []*TwitterEntity {
 				nextOffset = matchStart + m[1] + offset - 1
 
 				// If the url has a Generic TLD (not CC TLD), it's valid
-				if lastInvalid = invalidShortDomain.MatchString(lastEntity.Text); !lastInvalid {
-					result = append(result, lastEntity)
-				}
+				result = append(result, lastEntity)
 			}
 
 			if lastEntity == nil {
